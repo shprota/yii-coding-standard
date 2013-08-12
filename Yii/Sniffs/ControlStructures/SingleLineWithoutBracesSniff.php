@@ -96,19 +96,15 @@ class Yii_Sniffs_ControlStructures_SingleLineWithoutBracesSniff implements PHP_C
 
 		if ($next === false) { // this is single line structure.
 			
-			// check the whitespace after tocken
-			if ($tokens[$stackPtr + 1]['type'] != 'T_WHITESPACE' || strlen($tokens[$stackPtr + 1]['content']) > 1) {
-				$error = 'Single line condition must have a one whitespace before opening parenthesis';
-				$phpcsFile->addError($error, $stackPtr, 'SingleLineIfMustHaveAWhiteSpace');
-			}
-			
 			// find the last close parenthesis in the condition.
 			$i = 0;
 			$newParenthesis = $stackPtr;
-			do {
-				$newParenthesis = $phpcsFile->findNext(array(T_OPEN_PARENTHESIS, T_CLOSE_PARENTHESIS), ($newParenthesis + 1));
-				$i = ($tokens[$newParenthesis]['type'] == "T_OPEN_PARENTHESIS") ? $i + 1 : $i - 1;		
-			} while ($i != 0);
+			if( $tokens[$stackPtr]['type'] !== 'T_ELSE'){
+				do {
+					$newParenthesis = $phpcsFile->findNext(array(T_OPEN_PARENTHESIS, T_CLOSE_PARENTHESIS), ($newParenthesis + 1));
+					$i = ($tokens[$newParenthesis]['type'] == "T_OPEN_PARENTHESIS") ? $i + 1 : $i - 1;		
+				} while ($i != 0);
+			}
 
 			$closeBracket = $newParenthesis;
 		
@@ -116,17 +112,17 @@ class Yii_Sniffs_ControlStructures_SingleLineWithoutBracesSniff implements PHP_C
 			$n       = 1;
 			$newline = false;
 			
-			while ($tokens[$closeBracket + $n]['type'] == 'T_WHITESPACE') {
+			do{
 				$strlen = strlen($tokens[$closeBracket + $n]['content']);
 				if ($tokens[$closeBracket + $n]['content'][$strlen - 1] == $phpcsFile->eolChar) {
 					$newline = true;
 					break;
 				}
 				$n++;
-			}
+			} while ($tokens[$closeBracket + $n]['type'] == 'T_WHITESPACE' || $tokens[$closeBracket + $n]['type'] == 'T_COMMENT');
 			
 			if ($newline === false) {
-				$error = 'Single line "%s" must have an expression started from new line. ';
+				$error = 'Single line "%s" must have an expression started from new line.';
 				$phpcsFile->addError($error, $stackPtr, 'SingleLineExpressionMustHaveANewLineExpression', array(strtoupper($tokens[$stackPtr]['content'])));
 			}
 		} // end if
