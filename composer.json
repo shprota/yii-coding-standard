@@ -1,5 +1,5 @@
 {
-        "name": "ardem/yii-coding-standard",
+        "name": "shprota/yii-coding-standard",
         "description": "Yii Framework PHP CodeSniffer Coding Standard.",
         "keywords": ["yii", "phpcs", "coding standards"],
         "license": "BSD-3-Clause",
@@ -11,7 +11,7 @@
                 }
         ],
         "support": {
-        	"issues": "https://github.com/Ardem/yii-coding-standard/issues"
+        	"issues": "https://github.com/shprota/yii-coding-standard/issues"
 	},
         "require": {
                 "squizlabs/php_codesniffer": ">=1.4.2"
