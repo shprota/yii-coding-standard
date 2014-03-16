@@ -64,11 +64,12 @@ class Yii_Sniffs_NamingConventions_ValidVariableNameSniff extends Zend_Sniffs_Na
                         $objVarName = substr($objVarName, 1);
                     }
 
-                    if (PHP_CodeSniffer::isCamelCaps($objVarName, false, true, false) === false) {
+/*                    if (PHP_CodeSniffer::isCamelCaps($objVarName, false, true, false) === false) {
                         $error = 'Variable "%s" is not in valid camel caps format';
                         $data  = array($originalVarName);
                         $phpcsFile->addWarning($error, $var, 'NotCamelCaps', $data);
-                    } else if (preg_match('|\d|', $objVarName)) {
+                    } else */
+                    if (preg_match('|\d|', $objVarName)) {
                         $warning = 'Variable "%s" contains numbers but this is discouraged';
                         $data    = array($originalVarName);
                         $phpcsFile->addWarning($warning, $stackPtr, 'ContainsNumbers', $data);
